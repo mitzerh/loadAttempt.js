@@ -1,4 +1,8 @@
-// load Pooler Attempt Function
+/**
+ * Load Pooler attempt function
+ * https://github.com/mitzerh/loadAttempt.js
+ * MIT License.
+ */
 (function(){
 	
 	function loadAttempt(cfg) {
