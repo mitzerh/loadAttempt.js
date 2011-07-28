@@ -31,5 +31,21 @@
 		}
 	});
 	
+	/*
+	window.test = loadAttempt(10,2000,function(){
+		console.log("attempt 1");
+		return (typeof jQuerys!=="undefined") ? true : false;
+	},function(){
+		success();
+	});
+	
+	window.test2 = loadAttempt(function(){
+		console.log("attempt 2");
+		return (typeof jQuerys!=="undefined") ? true : false;
+	},function(){
+		success();
+	});
+	
+	*/
 	
 }());
