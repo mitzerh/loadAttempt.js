@@ -81,7 +81,7 @@
 	}
 	
 	if (typeof jQuery!=="undefined") { // attach to jQuery
-		$.extend({ loadAttempt:loadAttempt });
+		jQuery.extend({ loadAttempt:loadAttempt });
 	} else {
 		window.loadAttempt = loadAttempt;
 	}
