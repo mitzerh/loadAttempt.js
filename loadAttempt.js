@@ -80,9 +80,9 @@
 		return (typeof val === "function") ? true : false;
 	}
 	
-	if (typeof jQuery!=="undefined") { // attach to jQuery
+	if (typeof jQuery!=="undefined" && jQuery.extend && !jQuery.loadAttempt) { // attach to jQuery
 		jQuery.extend({ loadAttempt:loadAttempt });
-	} else {
+	} else if (!window.loadAttempt) {
 		window.loadAttempt = loadAttempt;
 	}
 	
