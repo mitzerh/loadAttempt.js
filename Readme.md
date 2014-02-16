@@ -1,28 +1,44 @@
-loadAttempt.js
--------------
-Compact script to attempt execution for any type of condition.
+# LoadAttempt Script
 
+> Compact script to attempt execution for any type of condition.
 
-The MIT License
----------------
+> `js/` folder also contains files for use in `node` and `amd`
 
-####Copyright&#169; 2011 Helcon Mabesa
+---
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the &#8220;Software&#8221;), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## Usage
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+`loadAttempt(<attempts>, <millisecconds>, <check function>, <success function>)`
 
-THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+```js
+loadAttempt(50, 150, function(){
+    return (window.foo) ? true : false;
+}, function(){
+    alert("true");
+});
+````
+
+`loadAttempt(<check function>, <success function>)`
+By default, an attempt of `999` times every `500ms` is set if not present.
+
+```js
+loadAttempt(function(){
+    return (window.foo) ? true : false;
+}, function(){
+    alert("true");
+});
+```
+
+An attempt can be aborted by setting it up as a variable and calling `abort()`
+
+```js
+var sample = loadAttempt(function(){
+    return (window.foo) ? true : false;
+}, function(){
+    alert("true");
+});
+
+// abort loadAttempt
+sample.abort();
+```
 
