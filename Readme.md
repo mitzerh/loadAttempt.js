@@ -8,7 +8,18 @@
 
 ## Usage
 
-`LoadAttempt(<attempts>, <millisecconds>, <check function>, <success function>)`
+`LoadAttempt(<attempts>, <millisecconds>, <check>, <success>, <expires/abort>)`
+
+`attempt` - The number of load attempts
+
+`milliseconds` - Time in `ms` in between attempts
+
+`check` - callback `function` for the load attempt script to verify
+
+`success` - callback `function` to execute if `check` returns true
+
+`expires/abort` - callback `function` to execute on expire/abort (`function` returns "aborted" or "expired" as first argument)
+
 
 ```js
 LoadAttempt(50, 150, function(){
