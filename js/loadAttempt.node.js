@@ -52,6 +52,7 @@ var LoadAttempt = function() {
 
 		if (isAbort) {
 			clearTimeout(timeout);
+			cfg.expires("aborted");
 		} else if (cfg.check()) {
 			cfg.success();
 			clearTimeout(timeout);
@@ -60,7 +61,7 @@ var LoadAttempt = function() {
 				attempt();
 			},cfg.timeout);
 		} else {
-			cfg.expires();
+			cfg.expires("expired");
 		}
 		cfg.attempts--;
 

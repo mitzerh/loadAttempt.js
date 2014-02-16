@@ -8,37 +8,56 @@
 
 ## Usage
 
-`loadAttempt(<attempts>, <millisecconds>, <check function>, <success function>)`
+`LoadAttempt(<attempts>, <millisecconds>, <check function>, <success function>)`
 
 ```js
-loadAttempt(50, 150, function(){
+LoadAttempt(50, 150, function(){
     return (window.foo) ? true : false;
 }, function(){
     alert("true");
 });
 ````
 
-`loadAttempt(<check function>, <success function>)`
-By default, an attempt of `999` times every `500ms` is set if not present.
+By default, an attempt of `999` times every `500ms` is set if not present:
+
+`LoadAttempt(<check function>, <success function>)`
 
 ```js
-loadAttempt(function(){
+LoadAttempt(function(){
     return (window.foo) ? true : false;
 }, function(){
     alert("true");
 });
 ```
 
-An attempt can be aborted by setting it up as a variable and calling `abort()`
+An attempt can be aborted by setting it up as a variable and calling `abort()`:
 
 ```js
-var sample = loadAttempt(function(){
+var sample = LoadAttempt(function(){
     return (window.foo) ? true : false;
 }, function(){
     alert("true");
 });
 
 // abort loadAttempt
-sample.abort();
+setTimeout(function(){
+    sample.abort();
+}, 1000);
 ```
 
+If you have an expires/abort function listener, you can listen for that event:
+
+```js
+var sample = LoadAttempt(function(){
+    return (window.foo) ? true : false;
+}, function(){
+    alert("true");
+}, function(type){
+    alert((type === "aborted") ? "attempt aborted!" : "all attempts expired!");
+});
+
+// abort loadAttempt
+setTimeout(function(){
+    sample.abort();
+}, 1000);
+```
