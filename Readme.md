@@ -1,74 +1,103 @@
-# LoadAttempt Script
-
-> Compact script to attempt execution for any type of condition.
-
-> `js/` folder also contains files for use in `node` and `amd`
-
----
-
-## Usage
-
-`LoadAttempt(<attempts>, <millisecconds>, <check>, <success>, <expires/abort>)`
-
-`attempt` - The number of load attempts
-
-`milliseconds` - Time in `ms` in between attempts
-
-`check` - callback `function` for the load attempt script to verify
-
-`success` - callback `function` to execute if `check` returns true
-
-`expires/abort` - callback `function` to execute on expire/abort (`function` returns "aborted" or "expired" as first argument)
+LoadAttempt Script
+==================
+Lightweight **Promise** script to attempt execution for any type of condition.
 
 
-```js
-LoadAttempt(50, 150, function(){
-    return (window.foo) ? true : false;
-}, function(){
-    alert("true");
-});
-````
 
-By default, an attempt of `999` times every `500ms` is set if not present:
+Syntax
+------
 
-`LoadAttempt(<check function>, <success function>)`
+    LoadAttempt([attempts:int], [interval:int], [check:function], [success:function], [expires|abort:function]);
 
-```js
-LoadAttempt(function(){
-    return (window.foo) ? true : false;
-}, function(){
-    alert("true");
-});
-```
+**attempt** (optional)
 
-An attempt can be aborted by setting it up as a variable and calling `abort()`:
+- The number of attempts to run the **check** function
+- NOTE: optional in conjuction with **interval** (see examples)
 
-```js
-var sample = LoadAttempt(function(){
-    return (window.foo) ? true : false;
-}, function(){
-    alert("true");
-});
+**interval** (optional)
 
-// abort loadAttempt
-setTimeout(function(){
-    sample.abort();
-}, 1000);
-```
+- Time in ***ms*** in between attempts
+- NOTE: optional in conjuction with **attempt** (see examples)
 
-If you have an expires/abort function listener, you can listen for that event:
+**check**
 
-```js
-var sample = LoadAttempt(function(){
-    return (window.foo) ? true : false;
-}, function(){
-    alert("true");
-}, function(type){
-    alert((type === "aborted") ? "attempt aborted!" : "all attempts expired!");
-});
+- `function` for the promise script to verify
+- Must return a `boolean` **true** for success
 
-// abort loadAttempt
-setTimeout(function(){
-    sample.abort();
-}, 1000);
-```
+**success**
+
+- `function` to execute on successful **check**
+
+**expires|abort**
+
+- `function` to execute on expire/abort 
+- the `function` returns `string` "aborted" or "expired" as first argument
+
+
+Examples
+--------
+
+- Check if `window.foo` exists, checking `50` times every `150ms`
+
+  ```js
+  LoadAttempt(50, 150, function(){
+      return (window.foo) ? true : false;
+  }, function(){
+      alert("true");
+  });
+  ```
+
+- Without **attempts** and **interval** - by default, an attempt of `999` times every `500ms` is set
+
+  ```js
+  LoadAttempt(function(){
+      return (window.foo) ? true : false;
+  }, function(){
+      alert("true");
+  });
+  ```
+
+- Optional **attempts** only, default **interval**
+
+  ```js
+  LoadAttempt(50, function(){
+      return (window.foo) ? true : false;
+  }, function(){
+      alert("true");
+  });
+  ```
+        
+
+- An attempt can be aborted by setting it up as a variable and calling `abort()`:
+
+  ```js
+  var sample = LoadAttempt(function(){
+      return (window.foo) ? true : false;
+  }, function(){
+      alert("true");
+  });
+  
+  // abort loadAttempt
+  setTimeout(function(){
+      sample.abort();
+  }, 1000);
+  ```
+
+
+- If you have an expires/abort function listener, you can listen for that event:
+
+  ```js
+  var sample = LoadAttempt(function(){
+      return (window.foo) ? true : false;
+  }, function(){
+      alert("true");
+  }, function(type){
+      alert((type === "aborted") ? "attempt aborted!" : "all attempts expired!");
+  });
+  
+  // abort loadAttempt
+  setTimeout(function(){
+      sample.abort();
+  }, 1000);
+  ```
+
