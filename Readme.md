@@ -28,7 +28,7 @@ Syntax
 
 - `function` to execute on successful **check**
 
-**expires|abort**
+**expires|abort** (optional)
 
 - `function` to execute on expire/abort 
 - the `function` returns `string` "aborted" or "expired" as first argument
@@ -37,7 +37,7 @@ Syntax
 Examples
 --------
 
-- Check if `window.foo` exists, checking `50` times every `150ms`
+- Check if `window.foo` exists, checking `50` times every `150ms` ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/))
 
   ```js
   LoadAttempt(50, 150, function(){
@@ -47,7 +47,9 @@ Examples
   });
   ```
 
-- Without **attempts** and **interval** - by default, an attempt of `999` times every `500ms` is set
+
+
+- Without **attempts** and **interval** - by default, an attempt of `999` times every `500ms` is set ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/2/))
 
   ```js
   LoadAttempt(function(){
@@ -57,7 +59,7 @@ Examples
   });
   ```
 
-- Optional **attempts** only, default **interval**
+- Optional **attempts** only, default **interval** ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/3/))
 
   ```js
   LoadAttempt(50, function(){
@@ -68,7 +70,7 @@ Examples
   ```
         
 
-- An attempt can be aborted by setting it up as a variable and calling `abort()`:
+- An attempt can be aborted by setting it up as a variable and calling `abort()` ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/4/))
 
   ```js
   var sample = LoadAttempt(function(){
@@ -84,7 +86,7 @@ Examples
   ```
 
 
-- If you have an expires/abort function listener, you can listen for that event:
+- If you have an expires/abort function listener, you can listen for that event ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/5/))
 
   ```js
   var sample = LoadAttempt(function(){
@@ -100,4 +102,6 @@ Examples
       sample.abort();
   }, 1000);
   ```
+
+- If attempts expires ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/6/))
 
