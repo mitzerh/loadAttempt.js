@@ -1,96 +1,103 @@
-(function(){
-
 /**
- * Load Pooler attempt function
- * https://github.com/mitzerh/loadAttempt.js
- * MIT License.
- */
-var CONST = {
-	attempts: 999,
-	timeout: 500
-};
+* load-attempt v2.0.0 | 2014-12-01
+* LoadAttempt script - https://github.com/mitzerh/loadAttempt.js
+* by Helcon Mabesa
+* MIT license http://opensource.org/licenses/MIT
+**/
+(function(window, app){
 
-var LoadAttempt = function() {
-	var args = arguments,
-		cfg = false;
+    if (window.jQuery && !window.jQuery.loadAttempt) {
+        window.jQuery.loadAttempt = app;
+    }
 
-	if (isNum(args[0]) && isNum(args[1]) && isFunc(args[2]) && isFunc(args[3])) {
+    window.LoadAttempt = window.LoadAttempt || app;
 
-		cfg = {
-			attempts: args[0],
-			timeout: args[1],
-			check: args[2],
-			success: args[3],
-			expires: isFunc(args[4]) ? args[4] : false
-		};
+}(window,
 
-	} else if (isNum(args[0]) && isFunc(args[1]) && isFunc(args[2])) {
+    (function(){
 
-		cfg = {
-			attempts: args[0],
-			timeout: CONST.timeout,
-			check: args[1],
-			success: args[2],
-			expires: isFunc(args[3]) ? args[3] : false
-		};
+        var CONST = {
+            attempts: 999,
+            timeout: 500
+        };
 
-	} else if (isFunc(args[0]) && isFunc(args[1])) {
+        var LoadAttempt = function() {
+            var args = arguments,
+                cfg = false;
 
-		cfg = {
-			attempts: CONST.attempts,
-			timeout: CONST.timeout,
-			check: args[0],
-			success: args[1],
-			expires: isFunc(args[2]) ? args[2] : false
-		};
+            if (isNum(args[0]) && isNum(args[1]) && isFunc(args[2]) && isFunc(args[3])) {
 
-	}
+                cfg = {
+                    attempts: args[0],
+                    timeout: args[1],
+                    check: args[2],
+                    success: args[3],
+                    expires: isFunc(args[4]) ? args[4] : false
+                };
 
-	var timeout, isAbort = false;
+            } else if (isNum(args[0]) && isFunc(args[1]) && isFunc(args[2])) {
 
-	var attempt = function() {
+                cfg = {
+                    attempts: args[0],
+                    timeout: CONST.timeout,
+                    check: args[1],
+                    success: args[2],
+                    expires: isFunc(args[3]) ? args[3] : false
+                };
 
-		if (isAbort) {
-			clearTimeout(timeout);
-			cfg.expires("aborted");
-		} else if (cfg.check()) {
-			cfg.success();
-			clearTimeout(timeout);
-		} else if (cfg.attempts > 0) {
-			timeout = setTimeout(function(){
-				attempt();
-			},cfg.timeout);
-		} else {
-			cfg.expires("expired");
-		}
-		cfg.attempts--;
+            } else if (isFunc(args[0]) && isFunc(args[1])) {
 
-	};
+                cfg = {
+                    attempts: CONST.attempts,
+                    timeout: CONST.timeout,
+                    check: args[0],
+                    success: args[1],
+                    expires: isFunc(args[2]) ? args[2] : false
+                };
 
-	attempt();
+            }
 
-	return {
-		abort: function() {
-			isAbort = true;
-		}
-	};
+            var timeout, isAbort = false;
 
-};
+            var attempt = function() {
 
-var isNum = function(val) {
-	return (typeof val === "number") ? true : false;
-};
+                if (isAbort) {
+                    clearTimeout(timeout);
+                    cfg.expires("aborted");
+                } else if (cfg.check()) {
+                    cfg.success();
+                    clearTimeout(timeout);
+                } else if (cfg.attempts > 0) {
+                    timeout = setTimeout(function(){
+                        attempt();
+                    },cfg.timeout);
+                } else {
+                    cfg.expires("expired");
+                }
+                cfg.attempts--;
 
-var isFunc = function(val) {
-	return (typeof val === "function") ? true : false;
-};
+            };
 
+            attempt();
 
-/* attach to jQuery */
-if (typeof jQuery!=="undefined" && jQuery.extend && !jQuery.loadAttempt) {
-   jQuery.extend({ loadAttempt: LoadAttempt });
-} else if (!window.LoadAttempt) {
-   window.LoadAttempt = LoadAttempt;
-}
+            return {
+                abort: function() {
+                    isAbort = true;
+                }
+            };
 
-}());
+        };
+
+        var isNum = function(val) {
+            return (typeof val === "number") ? true : false;
+        };
+
+        var isFunc = function(val) {
+            return (typeof val === "function") ? true : false;
+        };
+
+        return LoadAttempt;
+
+    }())
+
+));

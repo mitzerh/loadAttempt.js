@@ -1,7 +1,17 @@
 {
-  "name": "loadattempt-script",
+  "name": "load-attempt",
   "version": "2.0.0",
+
   "description": "LoadAttempt script",
+  "author": "Helcon Mabesa",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mitzerh/loadAttempt.js"
+  },
+
+  "license": "MIT license http://opensource.org/licenses/MIT",
+  
   "private": true,
   "devDependencies": {
     "grunt": "~0.4.2",
