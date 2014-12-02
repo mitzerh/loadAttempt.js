@@ -1,13 +1,26 @@
 LoadAttempt Script
 ==================
-Lightweight **Promise** script to attempt execution for any type of condition.
-
+Lightweight **Promise**-type script to attempt execution for any type of condition. You just need to return a `boolean` **true**.
 
 
 Syntax
 ------
 
-    LoadAttempt([attempts:int], [interval:int], [check:function], [success:function], [expires|abort:function]);
+*Anonymous*
+```
+LoadAttempt([attempts:int], [interval:int], [check:function], [success:function], [expires|abort:function]);
+```
+
+*Variable*
+```
+var promise = LoadAttempt([attempts:int], [interval:int], [check:function]);
+
+promise.success([success:function]);
+
+promise.expires([expires|abort:function]);
+
+```
+
 
 **attempt** (optional)
 
@@ -40,11 +53,22 @@ Examples
 - Check if `window.foo` exists, checking `50` times every `150ms` ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/))
 
   ```js
+  // anonymous
   LoadAttempt(50, 150, function(){
       return (window.foo) ? true : false;
   }, function(){
       alert("true");
   });
+  
+  // variable
+  var sample = LoadAttempt(50, 150, function(){
+      return (window.foo) ? true : false;
+  });
+  
+  sample.success(function(){
+      alert("true");
+  });
+  
   ```
 
 
@@ -52,9 +76,19 @@ Examples
 - Without **attempts** and **interval** - by default, an attempt of `999` times every `500ms` is set ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/2/))
 
   ```js
+  // anonymous
   LoadAttempt(function(){
       return (window.foo) ? true : false;
   }, function(){
+      alert("true");
+  });
+  
+  // variable
+  var sample = LoadAttempt(function(){
+      return (window.foo) ? true : false;
+  });
+  
+  sample.success(function(){
       alert("true");
   });
   ```
@@ -62,9 +96,19 @@ Examples
 - Optional **attempts** only, default **interval** ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/3/))
 
   ```js
+  // anonymouse
   LoadAttempt(50, function(){
       return (window.foo) ? true : false;
   }, function(){
+      alert("true");
+  });
+  
+  // variable
+  var sample = LoadAttempt(50, function(){
+      return (window.foo) ? true : false;
+  });
+  
+  sample.success(function(){
       alert("true");
   });
   ```
@@ -91,9 +135,13 @@ Examples
   ```js
   var sample = LoadAttempt(function(){
       return (window.foo) ? true : false;
-  }, function(){
+  });
+  
+  sample.success(function(){
       alert("true");
-  }, function(type){
+  });
+  
+  sample.expires(function(type){
       alert((type === "aborted") ? "attempt aborted!" : "all attempts expired!");
   });
   
@@ -104,4 +152,13 @@ Examples
   ```
 
 - If attempts expires ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/6/))
-
+  
+  ```js
+  var sample = LoadAttempt(15, 150, function(){
+      return (window.foo) ? true : false;
+  });
+  
+  sample.expires(function(type){
+      alert((type === "aborted") ? "attempt aborted!" : "all attempts expired!");
+  });
+  ```
