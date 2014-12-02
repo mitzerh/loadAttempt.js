@@ -11,7 +11,7 @@ Syntax
 LoadAttempt([attempts:int], [interval:int], [check:function], [success:function], [expires|abort:function]);
 ```
 
-*Variable*
+*Methods*
 ```
 var promise = LoadAttempt([attempts:int], [interval:int], [check:function]);
 
@@ -50,7 +50,7 @@ promise.expires([expires|abort:function]);
 Examples
 --------
 
-- Check if `window.foo` exists, checking `50` times every `150ms` ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/))
+- Check if `window.foo` exists, checking `50` times every `150ms`
 
   ```js
   // anonymous
@@ -60,7 +60,7 @@ Examples
       alert("true");
   });
   
-  // variable
+  // method
   var sample = LoadAttempt(50, 150, function(){
       return (window.foo) ? true : false;
   });
@@ -70,10 +70,11 @@ Examples
   });
   
   ```
+  
+  JSFiddle Examples: [Anonymous](http://jsfiddle.net/mitzerh/d5psqsxg/) | [Method](http://jsfiddle.net/mitzerh/mjvfbsbp/)
 
 
-
-- Without **attempts** and **interval** - by default, an attempt of `999` times every `500ms` is set ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/2/))
+- Without **attempts** and **interval** - by default, an attempt of `999` times every `500ms` is set
 
   ```js
   // anonymous
@@ -83,7 +84,7 @@ Examples
       alert("true");
   });
   
-  // variable
+  // method
   var sample = LoadAttempt(function(){
       return (window.foo) ? true : false;
   });
@@ -92,8 +93,11 @@ Examples
       alert("true");
   });
   ```
+  
+  JSFiddle Examples: [Anonymous](http://jsfiddle.net/mitzerh/d5psqsxg/2/) | [Method](http://jsfiddle.net/mitzerh/mjvfbsbp/1/)
 
-- Optional **attempts** only, default **interval** ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/3/))
+
+- Optional **attempts** only, default **interval**
 
   ```js
   // anonymouse
@@ -103,7 +107,7 @@ Examples
       alert("true");
   });
   
-  // variable
+  // method
   var sample = LoadAttempt(50, function(){
       return (window.foo) ? true : false;
   });
@@ -112,9 +116,11 @@ Examples
       alert("true");
   });
   ```
-        
 
-- An attempt can be aborted by setting it up as a variable and calling `abort()` ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/4/))
+  JSFiddle Examples: [Anonymous](http://jsfiddle.net/mitzerh/d5psqsxg/3/) | [Method](http://jsfiddle.net/mitzerh/mjvfbsbp/2/)
+
+
+- An attempt can be aborted by setting it up as a variable and calling `abort()` method
 
   ```js
   var sample = LoadAttempt(function(){
@@ -129,8 +135,10 @@ Examples
   }, 1000);
   ```
 
+  JSFiddle Examples: [Anonymous](http://jsfiddle.net/mitzerh/d5psqsxg/4/) | [Method](http://jsfiddle.net/mitzerh/mjvfbsbp/3/)
 
-- If you have an expires/abort function listener, you can listen for that event ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/5/))
+
+- If you have an expires/abort function listener, you can listen for that event
 
   ```js
   var sample = LoadAttempt(function(){
@@ -151,7 +159,10 @@ Examples
   }, 1000);
   ```
 
-- If attempts expires ([Example @ JS Fiddle](http://jsfiddle.net/mitzerh/d5psqsxg/6/))
+  JSFiddle Examples: [Anonymous](http://jsfiddle.net/mitzerh/d5psqsxg/5/) | [Method](http://jsfiddle.net/mitzerh/mjvfbsbp/4/)
+
+
+- If attempts expires
   
   ```js
   var sample = LoadAttempt(15, 150, function(){
@@ -162,3 +173,6 @@ Examples
       alert((type === "aborted") ? "attempt aborted!" : "all attempts expired!");
   });
   ```
+
+  JSFiddle Examples: [Anonymous](http://jsfiddle.net/mitzerh/d5psqsxg/6/) | [Method](http://jsfiddle.net/mitzerh/mjvfbsbp/5/)
+  
