@@ -1,5 +1,5 @@
 /**
-* load-attempt v2.0.0 | 2014-12-01
+* load-attempt v2.1.0 | 2014-12-01
 * LoadAttempt script - https://github.com/mitzerh/loadAttempt.js
 * by Helcon Mabesa
 * MIT license http://opensource.org/licenses/MIT
@@ -21,50 +21,57 @@
             timeout: 500
         };
 
+        var fn = function() {};
+
         var LoadAttempt = function() {
             var args = arguments,
                 cfg = false;
 
-            if (isNum(args[0]) && isNum(args[1]) && isFunc(args[2]) && isFunc(args[3])) {
+            if (isNum(args[0]) && isNum(args[1]) && isFunc(args[2])) {
 
                 cfg = {
                     attempts: args[0],
                     timeout: args[1],
                     check: args[2],
-                    success: args[3],
-                    expires: isFunc(args[4]) ? args[4] : false
+                    success: (isFunc(args[3])) ? args[3] : fn,
+                    expires: (isFunc(args[4])) ? args[4] : fn
                 };
 
-            } else if (isNum(args[0]) && isFunc(args[1]) && isFunc(args[2])) {
+            } else if (isNum(args[0]) && isFunc(args[1])) {
 
                 cfg = {
                     attempts: args[0],
                     timeout: CONST.timeout,
                     check: args[1],
-                    success: args[2],
-                    expires: isFunc(args[3]) ? args[3] : false
+                    success: (isFunc(args[2])) ? args[2] : fn,
+                    expires: (isFunc(args[3])) ? args[3] : fn
                 };
 
-            } else if (isFunc(args[0]) && isFunc(args[1])) {
+            } else if (isFunc(args[0])) {
 
                 cfg = {
                     attempts: CONST.attempts,
                     timeout: CONST.timeout,
                     check: args[0],
-                    success: args[1],
-                    expires: isFunc(args[2]) ? args[2] : false
+                    success: (isFunc(args[1])) ? args[1] : fn,
+                    expires: (isFunc(args[2])) ? args[2] : fn
                 };
 
             }
 
-            var timeout, isAbort = false;
+            var timeout,
+                isAbort = false,
+                isExpires = false,
+                isSuccess = false;
 
             var attempt = function() {
 
                 if (isAbort) {
                     clearTimeout(timeout);
-                    cfg.expires("aborted");
+                    isExpires = "aborted";
+                    cfg.expires(isExpires);
                 } else if (cfg.check()) {
+                    isSuccess = true;
                     cfg.success();
                     clearTimeout(timeout);
                 } else if (cfg.attempts > 0) {
@@ -72,7 +79,8 @@
                         attempt();
                     },cfg.timeout);
                 } else {
-                    cfg.expires("expired");
+                    isExpires = "expired";
+                    cfg.expires(isExpires);
                 }
                 cfg.attempts--;
 
@@ -83,6 +91,20 @@
             return {
                 abort: function() {
                     isAbort = true;
+                },
+                success: function(success) {
+                    if (isSuccess) {
+                        success();
+                    } else {
+                        cfg.success = success;
+                    }
+                },
+                expires: function(expires) {
+                    if (isExpires) {
+                        expires(isExpires);
+                    } else {
+                        cfg.expires = expires;
+                    }
                 }
             };
 
